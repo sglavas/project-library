@@ -8,7 +8,7 @@
 
 'use strict';
 
-const { create } = require('../database/models');
+const { createAndSaveBook } = require('../database/models');
 
 module.exports = function (app) {
 
