@@ -8,7 +8,11 @@
 
 'use strict';
 
+const { create } = require('../database/models');
+
 module.exports = function (app) {
+
+const { createAndSaveBook } = require('./../database/mongoDB');
 
   app.route('/api/books')
     .get(function (req, res){
@@ -16,7 +20,7 @@ module.exports = function (app) {
       //json res format: [{"_id": bookid, "title": book_title, "commentcount": num_of_comments },...]
     })
     
-    .post(function (req, res){
+    .post(async function (req, res){
       let title = req.body.title;
       //response will contain new book object including atleast _id and title
 
@@ -24,6 +28,12 @@ module.exports = function (app) {
         res.send('missing required field title');
         return;
       }
+
+      // Save book to the database
+      let result = await createAndSaveBook(title);
+
+      res.json({ _id: result._id , title: result.title });
+
     })
     
     .delete(function(req, res){
