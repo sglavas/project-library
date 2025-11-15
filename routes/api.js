@@ -22,6 +22,7 @@ module.exports = function (app) {
 
       if(!title){
         res.send('missing required field title');
+        return;
       }
     })
     
