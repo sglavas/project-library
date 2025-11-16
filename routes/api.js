@@ -61,7 +61,10 @@ const { createAndSaveBook, fetchBooks, findBook } = require('./../database/mongo
         return;
       }
 
-      res.send(result);
+      // Get JSON response
+      const responseObject = { "_id": result[0]._id, "title": result[0].title, "comments": result[0].comments };
+
+      res.json(responseObject);
 
     })
     
