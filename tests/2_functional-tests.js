@@ -195,7 +195,6 @@ suite('Functional Tests', function() {
           })
           .end((err, res) => {
             assert.equal(res.status, 200);
-            console.log("This ID not in db ", res.body, res.text);
             assert.equal(res.text, 'no book exists');
             done();
           })  
