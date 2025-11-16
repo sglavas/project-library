@@ -91,7 +91,18 @@ const removeBook = async (bookId) => {
         const filter = { _id: bookId };
 
         // Find the document and delete it
-        const result = Book.findOneAndDelete(filter);
+        const result = await Book.findOneAndDelete(filter);
+        return result;
+
+    }catch(err){
+        console.log(err);
+    }
+}
+
+const removeAllBooks = async () => {
+    try{
+        // Delete all documents in the collection
+        const result = await Book.deleteMany({});
         return result;
 
     }catch(err){
@@ -100,4 +111,4 @@ const removeBook = async (bookId) => {
 }
 
 
-module.exports = { createAndSaveBook, fetchBooks, findBook, findAndUpdateBook, removeBook }
+module.exports = { createAndSaveBook, fetchBooks, findBook, findAndUpdateBook, removeBook, removeAllBooks }
