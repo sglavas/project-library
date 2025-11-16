@@ -149,15 +149,56 @@ suite('Functional Tests', function() {
     suite('POST /api/books/[id] => add comment/expect book object with id', function(){
       
       test('Test POST /api/books/[id] with comment', function(done){
-        //done();
+        chai
+          .request(server)
+          .keepOpen()
+          .post(`/api/books/${testData[0]._id}`)
+          .send({
+            comment: 'A pretty decent book'
+          })
+          .end((err, res) => {
+            assert.equal(res.status, 200);
+            assert.property(res.body, 'comments', ["A pretty decent book"]);
+            assert.property(res.body, 'commentcount', 1);
+            assert.property(res.body, 'title', testData[0].title);
+            assert.property(res.body, '_id', testData[0]._id);
+            done();
+          })  
+
       });
 
       test('Test POST /api/books/[id] without comment field', function(done){
-        //done();
+        chai
+          .request(server)
+          .keepOpen()
+          .post(`/api/books/${testData[0]._id}`)
+          .send({
+            comment: 'A pretty decent book'
+          })
+          .end((err, res) => {
+            assert.equal(res.status, 200);
+            assert.property(res.body, 'comments', ["A pretty decent book"]);
+            assert.property(res.body, 'commentcount', 1);
+            assert.property(res.body, 'title', testData[0].title);
+            assert.property(res.body, '_id', testData[0]._id);
+            done();
+          })  
       });
 
       test('Test POST /api/books/[id] with comment, id not in db', function(done){
-        //done();
+        chai
+          .request(server)
+          .keepOpen()
+          .post(`/api/books/6919d9b2758c3e0013361b1f`)
+          .send({
+            comment: 'A pretty decent book'
+          })
+          .end((err, res) => {
+            assert.equal(res.status, 200);
+            console.log("This ID not in db ", res.body, res.text);
+            assert.equal(res.text, 'no book exists');
+            done();
+          })  
       });
       
     });
