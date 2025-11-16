@@ -85,4 +85,19 @@ const findAndUpdateBook = async (bookId, comment) => {
 }
 
 
-module.exports = { createAndSaveBook, fetchBooks, findBook, findAndUpdateBook }
+const removeBook = async (bookId) => {
+    try{
+        // Specify the filter using book ID
+        const filter = { _id: bookId };
+
+        // Find the document and delete it
+        const result = Book.findOneAndDelete(filter);
+        return result;
+
+    }catch(err){
+        console.log(err);
+    }
+}
+
+
+module.exports = { createAndSaveBook, fetchBooks, findBook, findAndUpdateBook, removeBook }
