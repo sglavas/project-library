@@ -57,5 +57,32 @@ const findBook = async (bookId) => {
     }
 }
 
+const findAndUpdateBook = async (bookId, comment) => {
+    try{
+        // Validate MongoDB ID
+        if(isValidObjectId(bookId)){
+            // Get MongoDB filter
+            let filter = {};
+        
+            filter._id = bookId;
+        
+            // Find the document, append the comment, increment the commentcount and return the updated document
+            const result = await Book.findOneAndUpdate(filter,
+                {
+                    $push: { comments: comment},
+                    $inc: { commentcount: 1 }
+                },
+                { new: true }
+            );
+            return result;
+        }
+        
+        return false;
+        
+    }catch(err){
+        console.log(err);
+    }
+}
 
-module.exports = { createAndSaveBook, fetchBooks, findBook }
+
+module.exports = { createAndSaveBook, fetchBooks, findBook, findAndUpdateBook }
