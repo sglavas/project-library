@@ -11,7 +11,7 @@
 
 module.exports = function (app) {
 
-const { createAndSaveBook, fetchBooks } = require('./../database/mongoDB');
+const { createAndSaveBook, fetchBooks, findBook } = require('./../database/mongoDB');
 
   app.route('/api/books')
     .get(async function (req, res){
@@ -48,9 +48,21 @@ const { createAndSaveBook, fetchBooks } = require('./../database/mongoDB');
 
 
   app.route('/api/books/:id')
-    .get(function (req, res){
+    .get(async function (req, res){
       let bookid = req.params.id;
       //json res format: {"_id": bookid, "title": book_title, "comments": [comment,comment,...]}
+
+      // Query the database with book id
+      const result = await findBook(bookid);
+
+      // The ID was incorrect, send error
+      if(result === false || result.length === 0){
+        res.send("no book exists");
+        return;
+      }
+
+      res.send(result);
+
     })
     
     .post(function(req, res){
