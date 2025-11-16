@@ -66,6 +66,8 @@ suite('Functional Tests', function() {
           .end((err, res) => {
             assert.equal(res.status, 200);
             assert.property(res.body, 'title', 'A Farewell to Arms');
+
+            testData.push(res.body);
             done();
           })
         });
@@ -83,16 +85,28 @@ suite('Functional Tests', function() {
               assert.equal(res.text, 'missing required field title');
               done();
             })
+            
+          });
+          
+        });
+        
+        
+        suite('GET /api/books => array of books', function(){
+          
+          test('Test GET /api/books',  function(done){            
+            chai
+              .request(server)
+              .keepOpen()
+              .get('/api/books')
+              .end((err, res) => {
+                assert.equal(res.status, 200);
+                assert.isArray(res.body, 'response should be an array');
+                assert.property(res.body[0], 'commentcount', 0);
+                assert.property(res.body[0], 'title', testData.title);
+                assert.property(res.body[0], '_id', testData._id);
+                done();
+              })
 
-      });
-      
-    });
-
-
-    suite('GET /api/books => array of books', function(){
-      
-      test('Test GET /api/books',  function(done){
-        //done();
       });      
       
     });
@@ -101,11 +115,32 @@ suite('Functional Tests', function() {
     suite('GET /api/books/[id] => book object with [id]', function(){
       
       test('Test GET /api/books/[id] with id not in db',  function(done){
-        //done();
+
+        chai
+          .request(server)
+          .keepOpen()
+          .get('/api/books/6919d9b2758c3e0013361b1f')
+          .end((err, res) => {
+            assert.equal(res.status, 200);
+            assert.equal(res.text, 'no book exists');
+            done();
+          })      
+
       });
       
       test('Test GET /api/books/[id] with valid id in db',  function(done){
-        //done();
+        chai
+          .request(server)
+          .keepOpen()
+          .get(`/api/books/${testData[0]._id}`)
+          .end((err, res) => {
+            assert.equal(res.status, 200);
+            assert.property(res.body, 'comments', []);
+            assert.property(res.body, 'commentcount', 0);
+            assert.property(res.body, 'title', testData[0].title);
+            assert.property(res.body, '_id', testData[0]._id);
+            done();
+          })   
       });
       
     });
