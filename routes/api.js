@@ -12,6 +12,7 @@
 module.exports = function (app) {
 
 const { createAndSaveBook, fetchBooks, findBook, findAndUpdateBook, removeBook, removeAllBooks } = require('./../database/mongoDB');
+const isEmptyObject = require('./../utils/checkEmptyObject');
 
   app.route('/api/books')
     .get(async function (req, res){
@@ -90,7 +91,7 @@ const { createAndSaveBook, fetchBooks, findBook, findAndUpdateBook, removeBook, 
       // Update the book document
       const result = await findAndUpdateBook(bookid, comment);
 
-      if(result === false){
+      if(result === null || isEmptyObject(result)){
         res.send("no book exists");
         return;
       }
