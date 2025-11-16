@@ -64,7 +64,7 @@ const { createAndSaveBook, fetchBooks, findBook, findAndUpdateBook, removeBook, 
       }
 
       // Get JSON response
-      const responseObject = { "_id": result[0]._id, "title": result[0].title, "comments": result[0].comments };
+      const responseObject = { "comments": result[0].comments, "_id": result[0]._id, "title": result[0].title, "commentcount": result[0].commentcount, "__v": result[0].__v };
 
       res.json(responseObject);
 
