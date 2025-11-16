@@ -39,13 +39,36 @@ suite('Functional Tests', function() {
 
 
     suite('POST /api/books with title => create book object/expect book object', function() {
-      
+
       test('Test POST /api/books with title', function(done) {
-        //done();
-      });
-      
-      test('Test POST /api/books with no title given', function(done) {
-        //done();
+        chai
+          .request(server)
+          .keepOpen()
+          .post('/api/books')
+          .send({
+            title: "A Farewell to Arms"
+          })
+          .end((err, res) => {
+            assert.equal(res.status, 200);
+            assert.property(res.body, 'title', 'A Farewell to Arms');
+            done();
+          })
+        });
+        
+        test('Test POST /api/books with no title given', function(done) {    
+          chai
+            .request(server)
+            .keepOpen()
+            .post('/api/books')
+            .send({
+              title: ""
+            })
+            .end((err, res) => {
+              assert.equal(res.status, 200);
+              assert.equal(res.text, 'missing required field title');
+              done();
+            })
+
       });
       
     });
