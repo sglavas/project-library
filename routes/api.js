@@ -11,7 +11,7 @@
 
 module.exports = function (app) {
 
-const { createAndSaveBook, fetchBooks, findBook, findAndUpdateBook } = require('./../database/mongoDB');
+const { createAndSaveBook, fetchBooks, findBook, findAndUpdateBook, removeBook } = require('./../database/mongoDB');
 
   app.route('/api/books')
     .get(async function (req, res){
@@ -97,9 +97,20 @@ const { createAndSaveBook, fetchBooks, findBook, findAndUpdateBook } = require('
 
     })
     
-    .delete(function(req, res){
+    .delete(async function(req, res){
       let bookid = req.params.id;
       //if successful response will be 'delete successful'
+
+      // Find the document and delete it
+      const result = await removeBook(bookid);
+
+      // If no book is found
+      if(result === null){
+        res.send("no book exists");
+        return;
+      }
+
+      res.send("delete successful");
     });
   
 };
