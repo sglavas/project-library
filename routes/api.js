@@ -11,7 +11,7 @@
 
 module.exports = function (app) {
 
-const { createAndSaveBook, fetchBooks, findBook } = require('./../database/mongoDB');
+const { createAndSaveBook, fetchBooks, findBook, findAndUpdateBook } = require('./../database/mongoDB');
 
   app.route('/api/books')
     .get(async function (req, res){
@@ -68,10 +68,35 @@ const { createAndSaveBook, fetchBooks, findBook } = require('./../database/mongo
 
     })
     
-    .post(function(req, res){
+    .post(async function(req, res){
       let bookid = req.params.id;
       let comment = req.body.comment;
       //json res format same as .get
+
+      // If book ID is missing
+      if(!bookid){
+        res.send("missing required field title");
+        return;
+      }
+
+      // If comment is missing
+      if(!comment){
+        res.send("missing required field comment");
+        return;
+      }
+
+      // Update the book document
+      const result = await findAndUpdateBook(bookid, comment);
+
+      if(result === false){
+        res.send("no book exists");
+        return;
+      }
+
+      console.log("This is the POST method ", result);
+
+      res.send(result);
+
     })
     
     .delete(function(req, res){
