@@ -1,4 +1,6 @@
 const Book = require('./models');
+const isValidObjectId = require('./../utils/validateMongoId');
+const { Query } = require('mongoose');
 
 const createAndSaveBook = async (bookTitle) => {
     try{
@@ -34,5 +36,26 @@ const fetchBooks = async () => {
     }
 }
 
+const findBook = async (bookId) => {
+    try{
+        // Validate MongoDB ID
+        if(isValidObjectId(bookId)){
+            // Get MongoDB filter
+            let filter = {};
 
-module.exports = { createAndSaveBook, fetchBooks }
+            filter._id = bookId;
+
+            // Query the database
+            const result = await Book.find(filter);
+            return result;
+        }
+
+        return false;
+
+    }catch(err){
+        console.log(err);
+    }
+}
+
+
+module.exports = { createAndSaveBook, fetchBooks, findBook }
