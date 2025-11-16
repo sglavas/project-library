@@ -11,6 +11,8 @@ const chai = require('chai');
 const assert = chai.assert;
 const server = require('../server');
 
+const Book = require('./../database/models');
+
 chai.use(chaiHttp);
 
 suite('Functional Tests', function() {
@@ -36,6 +38,19 @@ suite('Functional Tests', function() {
   */
 
   suite('Routing tests', function() {
+
+    // Define suite-scope array
+    let testData = [];
+
+    // Add before and after hooks to isolate the tests
+    before(async function() {
+        await Book.deleteMany({});
+    });
+
+
+    after(async function() {
+        await Book.deleteMany({});
+    });
 
 
     suite('POST /api/books with title => create book object/expect book object', function() {
