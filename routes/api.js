@@ -93,8 +93,6 @@ const { createAndSaveBook, fetchBooks, findBook, findAndUpdateBook } = require('
         return;
       }
 
-      console.log("This is the POST method ", result);
-
       res.send(result);
 
     })
