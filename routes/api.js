@@ -55,7 +55,7 @@ const { createAndSaveBook, fetchBooks, findBook } = require('./../database/mongo
       // Query the database with book id
       const result = await findBook(bookid);
 
-      // The ID was incorrect, send error
+      // If the ID was incorrect, send error
       if(result === false || result.length === 0){
         res.send("no book exists");
         return;
