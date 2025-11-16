@@ -8,16 +8,21 @@
 
 'use strict';
 
-const { createAndSaveBook } = require('../database/models');
 
 module.exports = function (app) {
 
-const { createAndSaveBook } = require('./../database/mongoDB');
+const { createAndSaveBook, fetchBooks } = require('./../database/mongoDB');
 
   app.route('/api/books')
-    .get(function (req, res){
+    .get(async function (req, res){
       //response will be array of book objects
       //json res format: [{"_id": bookid, "title": book_title, "commentcount": num_of_comments },...]
+
+      // Fetch books from the database
+      const result = await fetchBooks();
+
+      // Send the books as a response
+      res.send(result);
     })
     
     .post(async function (req, res){
