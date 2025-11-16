@@ -11,7 +11,7 @@
 
 module.exports = function (app) {
 
-const { createAndSaveBook, fetchBooks, findBook, findAndUpdateBook, removeBook } = require('./../database/mongoDB');
+const { createAndSaveBook, fetchBooks, findBook, findAndUpdateBook, removeBook, removeAllBooks } = require('./../database/mongoDB');
 
   app.route('/api/books')
     .get(async function (req, res){
@@ -43,6 +43,8 @@ const { createAndSaveBook, fetchBooks, findBook, findAndUpdateBook, removeBook }
     
     .delete(function(req, res){
       //if successful response will be 'complete delete successful'
+
+      removeAllBooks();
     });
 
 
