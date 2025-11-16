@@ -23,5 +23,16 @@ const createAndSaveBook = async (bookTitle) => {
     }
 }
 
+const fetchBooks = async () => {
+    try{
+        // Query the Book model
+        let result = await Book.find();
+        return result;
 
-module.exports = { createAndSaveBook }
+    }catch(err){
+        console.log(err);
+    }
+}
+
+
+module.exports = { createAndSaveBook, fetchBooks }
